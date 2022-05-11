@@ -1,10 +1,15 @@
 const express = require('express')
 const ruta = require('./controladores')
-const realtaim = require('./realtaim.js')
-const oracle = require('.././example.js')
+//const realtaim = require('./realtaim.js')
+//const oracle = require('.././example.js')
 const cors = require('cors')
 
 const app = express()
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 //app.use(cors)
 
 let corsOptions = {
@@ -31,5 +36,5 @@ app.get('/',ruta.pruebame)
 // app.get('/actualizarprecio/:cod/:prec/:local',ruta.actualizarproducto)
 // app.get('/masproductos',realtaim.insertardatorandom)
 // app.get('/graf',realtaim.dataparagrafica)
-app.get('/getdato/:lat/:lon/:fecha/:responsable',ruta.registrarubicacion)
+app.post('/getdato',ruta.registrarubicacion)
 app.get('/trackeo',ruta.trackcamiones)
