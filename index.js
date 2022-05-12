@@ -1,11 +1,14 @@
 const express = require('express')
 const ruta = require('./controladores')
+const serverless = require('serverless-http')
+const router = express.Router();
 //const realtaim = require('./realtaim.js')
 //const oracle = require('.././example.js')
 const cors = require('cors')
 
 const app = express()
 const bodyParser = require('body-parser')
+const ServerlessHttp = require('serverless-http')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -38,3 +41,5 @@ app.get('/',ruta.pruebame)
 // app.get('/graf',realtaim.dataparagrafica)
 app.post('/getdato',ruta.registrarubicacion)
 app.get('/trackeo',ruta.trackcamiones)
+
+module.exports.handler = serverless(app)
