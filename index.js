@@ -1,14 +1,14 @@
 const express = require('express')
 const ruta = require('./controladores')
-const serverless = require('serverless-http')
-const router = express.Router();
+//const serverless = require('serverless-http')
+// const router = express.Router();
 //const realtaim = require('./realtaim.js')
 //const oracle = require('.././example.js')
 const cors = require('cors')
 
 const app = express()
 const bodyParser = require('body-parser')
-const ServerlessHttp = require('serverless-http')
+//const ServerlessHttp = require('serverless-http')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -29,7 +29,7 @@ let corsOptions = {
     methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS'],
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
   }));
-app.listen(8000)
+app.listen(8080)
 console.log('server on port http:/localhost/'+8000)
 
 //rutas
@@ -42,4 +42,4 @@ app.get('/',ruta.pruebame)
 app.post('/getdato',ruta.registrarubicacion)
 app.get('/trackeo',ruta.trackcamiones)
 
-module.exports.handler = serverless(app)
+//module.exports.handler = serverless(app)

@@ -1,5 +1,7 @@
+const ok = require('dotenv').config()
+console.log()
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://app:VJhExH0QYoBo8qJc@cluster0.68xdv.mongodb.net/Cluster0?retryWrites=true&w=majority";
+const uri = 'mongodb+srv://app:VJhExH0QYoBo8qJc@cluster0.68xdv.mongodb.net/Cluster0?retryWrites=true&w=majority';
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 // client.connect(err => {
 //   const collection = client.db("test").collection("devices");
@@ -20,7 +22,17 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 //   });
 const insert = async(array,tabla)=>{
     //console.log(array)
-    if(typeof array[0]==="undefined"){
+    let data
+    let ans
+    try{
+        data = array.length
+    }catch{
+        data = 0
+    }
+    if(data===0){
+        ans = 'no data'
+    }else if(data===1){
+        ans = '1 elemento'
         MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
             const dbo = db.db("mydb");
@@ -31,12 +43,13 @@ const insert = async(array,tabla)=>{
             });
           });
     }else{
+        ans = 'many elementos'
         MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
             const dbo = db.db("mydb");
             dbo.collection(tabla).insertMany(array, function(err, res) {
               if (err) throw err;
-              console.log(`${array.length} documents inserted`);
+              //console.log(`${array.length} documents inserted`);
               db.close();
             });
           });        

@@ -10,13 +10,17 @@ const pruebame = async(req,res) => {
 const registrarubicacion = async(req,res)=>{
     // console.log(req)
     let obj = req.body;
+    let salida = {answer:'ok'}
     // console.log(obj)
     // res.json(obj)
     for(let i=0;i<obj.length;i++){
         obj[i].date = new Date(obj[i].timestamp)
     }
-    await db.insert(obj,'registros')
-    res.json({answer:'ok'})
+    await db.insert(obj,'registros').catch(err=>{
+        console.log(err)
+        salida = {answer:"error"}
+    })
+    res.json(salida)
 }
 
 const trackcamiones = async(req,res)=>{
@@ -25,7 +29,7 @@ const trackcamiones = async(req,res)=>{
    // console.log(desde)
    const filter = {filtro:{date: {$gte: desde}},sort:{date:-1}}
   // console.log(filter)
-    const data = await db.select('registros',filter )
+    const data = await db.select('registros',filter ).catch(err=>console.log(err))
    // console.table(data)
     const salida = []
     for(let i=0;i<data.length;i++){
