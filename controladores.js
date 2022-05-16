@@ -1,5 +1,11 @@
 const db = require('./db.js')
+const appki = 'AIzaSyCNwXerxNtjR0XQd1FGlJYJFhdw1RIT4eU'
 
+
+// const latloncondir = ()=>{
+//     const url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key='+appki
+//     const data = await axio
+// }
 
 const pruebame = async(req,res) => {
     console.log('Consulta base')
@@ -8,8 +14,8 @@ const pruebame = async(req,res) => {
 
 
 const registrarubicacion = async(req,res)=>{
-    // console.log(req)
     let obj = req.body;
+    //console.log(obj)
     let salida = {answer:'ok'}
     // console.log(obj)
     // res.json(obj)
@@ -45,13 +51,42 @@ const trackcamiones = async(req,res)=>{
         }
     }
     //console.log(data)
-    console.log('dataconsultada')
-    res.json(salida)
+console.log('dataconsultada')
+res.json(salida)
+
 }
 
+const databruta = async(req,res)=>{
+    const horas = 1
+    let desde = new Date();desde = new Date(desde.getTime()-1000*60*60*horas)
+   // console.log(desde)
+   const filter = {filtro:{date: {$gte: desde}},sort:{date:-1}}
+    const data = await db.select('registros',filter ).catch(err=>console.log(err))
+    res.json(data)
+
+
+}
+
+const registrarentrega = async(req,res)=>{
+    let obj = req.body;
+    //console.log(obj)
+    let salida = {answer:'ok'}
+    // console.log(obj)
+    // res.json(obj)
+    for(let i=0;i<obj.length;i++){
+        obj[i].date = new Date(obj[i].timestamp)
+    }
+    await db.insert(obj,'entregas').catch(err=>{
+        console.log(err)
+        salida = {answer:"error"}
+    })
+    res.json(salida)
+}
 
 module.exports = {
     pruebame,
     registrarubicacion,
-    trackcamiones
+    trackcamiones,
+    databruta,
+    registrarentrega
 }

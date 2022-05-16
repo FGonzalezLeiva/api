@@ -30,7 +30,7 @@ let corsOptions = {
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
   }));
 app.listen(8080)
-console.log('server on port http:/localhost/'+8000)
+console.log('server on port http:/localhost/'+8080)
 
 //rutas
 app.get('/',ruta.pruebame)
@@ -41,5 +41,7 @@ app.get('/',ruta.pruebame)
 // app.get('/graf',realtaim.dataparagrafica)
 app.post('/getdato',ruta.registrarubicacion)
 app.get('/trackeo',ruta.trackcamiones)
+app.get('/datab',ruta.databruta)
+app.post('/regentrega',ruta.registrarentrega)
 
 //module.exports.handler = serverless(app)

@@ -14,7 +14,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // MongoClient.connect(uri, function(err, db) {
 //     if (err) throw err;
 //     var dbo = db.db("mydb");
-//     dbo.createCollection("registros", function(err, res) {
+//     dbo.createCollection("entregas", function(err, res) {
 //       if (err) throw err;
 //       console.log("Collection created!");
 //       db.close();
@@ -33,10 +33,11 @@ const insert = async(array,tabla)=>{
         ans = 'no data'
     }else if(data===1){
         ans = '1 elemento'
+        let ingresar = array[0]
         MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
             const dbo = db.db("mydb");
-            dbo.collection(tabla).insertOne(array, function(err, res) {
+            dbo.collection(tabla).insertOne(ingresar, function(err, res) {
               if (err) throw err;
               //console.log("1 document inserted");
               db.close();
