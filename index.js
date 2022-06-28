@@ -47,5 +47,7 @@ app.post('/givmientregas',ruta.cargarentregas)
 app.post('/updateentrega',ruta.actualizarentrega)
 app.post('/log',logi.login)
 app.get('/dataentregas/:desde/:hasta',ruta.tablaentregas)
+app.get('/users',ruta.getusers)
+app.post('/setusers',ruta.setusers)
 
 //module.exports.handler = serverless(app)

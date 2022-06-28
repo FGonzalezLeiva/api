@@ -51,17 +51,18 @@ const insert = async(array,tabla)=>{
     }catch{
         data = 0
     }
-    //console.log(data)
+    //console.log(data,array1)
     if(data===0){
         ans = 'no data'   
     }else if(data===1){
         ans = '1 elemento'
-        let ingresar = array[0]
+        let ingresar = array1[0]
         MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
             const dbo = db.db("mydb");
             //console.log('ingresar uno ',array)
             //{dato1:'fhfdjhg'}
+            //console.log(tabla,ingresar)
             dbo.collection(tabla).insertOne(ingresar, function(err, res) {
               if (err) throw err;
               //console.log("1 document inserted");
@@ -133,9 +134,23 @@ const update = async(tabla,query,set)=>{
         }
 }
 
+const delete_ = async(tabla,query)=>{
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        const dbo = db.db("mydb");
+        const myquery = query
+        dbo.collection(tabla).deleteOne(myquery, function(err, obj) {
+          if (err) throw err;
+          console.log("1 document deleted");
+          db.close();
+        });
+      });
+}
+
 module.exports = {
     insert,
     select,
     update,
-    reboot
+    reboot,
+    delete_
 }

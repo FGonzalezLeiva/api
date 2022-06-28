@@ -83,6 +83,7 @@ res.json(salida)
 
 }
 
+//dar detalle del día de hoy, esto está destinado a los pilotos
 const databruta = async(req,res)=>{
     let obj = req.body
     console.log('databruta')
@@ -223,6 +224,7 @@ const tablaentregas = async(req,res)=>{
     for(let i=0;i<data.length;i++){
         //if(i==0){console.log(data[i])}
         let objeto ={}
+        objeto.id = data[i]._id
         objeto.dia=data[i].gestion.subido.echa_entrega_estimada_visual
         objeto.nom_client=data[i].cliente.nombre
         objeto.direccion=data[i].cliente.direccion
@@ -238,7 +240,7 @@ const tablaentregas = async(req,res)=>{
         try{objeto.coords_entrega = [data[i].gestion.entrega.lat,data[i].gestion.entrega.lon]}catch{objeto.coords_entrega = null}
         try{objeto.responsable_desercion = data[i].gestion.desercion.res}catch{objeto.responsable_desercion = null}
         try{objeto.hora_desercion = data[i].gestion.desercion.hora}catch{objeto.hora_desercion = null}
-        
+        try{objeto.motivo_desercion = data[i].gestion.desercion.razon}catch{objeto.motivo_desercion= null}
         //console.log(data[i].logistica.length)
         for(let j=0;j<data[i].logistica.length;j++){
 
@@ -253,6 +255,29 @@ const tablaentregas = async(req,res)=>{
 
 }
 
+const getusers = async(req,res)=>{
+    console.log('entré')
+    const data = await db.select('users').catch(err=>console.log(err))
+    res.json({answer:'ok',data:data})
+}
+
+const setusers = async(req,res)=>{
+    const {tipo,data} = req.body
+    let salida = {answer:'ok'}
+    if(tipo=='create'){
+        await db.insert(data,'users').catch(err=>{
+            // console.log(err)
+             salida = {answer:"error"}
+         })
+    }else if(tipo=='delete'){
+        const id = {_id: data._id}
+        await db.delete_('users',{_id:ObjectId(id._id)}).catch(err=>{
+            salida = {answer:"error"}
+        })
+    }
+    res.json(salida)
+}
+
 module.exports = {
     pruebame,
     registrarubicacion,
@@ -260,5 +285,7 @@ module.exports = {
     databruta,
     cargarentregas,
     actualizarentrega,
-    tablaentregas
+    tablaentregas,
+    getusers,
+    setusers
 }
